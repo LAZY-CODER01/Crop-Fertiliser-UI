@@ -111,12 +111,22 @@ const translations = {
   }
 };
 
+// Define types for state
+type LangKey = keyof typeof translations;
+type ResultType = {
+  recommended_crop: string;
+  recommended_fertilizer: string;
+  confidence: number;
+  alternatives: { crop: string; confidence: number }[];
+} | null;
+
 const AgriPredictorUI = () => {
-  const [lang, setLang] = useState('en'); // Default Language is English
-  const t = translations[lang]; // Helper to get current text
+  // FIX 1: Explicitly tell TypeScript that 'lang' is one of the keys of translations
+  const [lang, setLang] = useState<LangKey>('en'); 
+  const t = translations[lang]; 
 
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState<ResultType>(null);
   const [formData, setFormData] = useState({
     temperature: 26,
     humidity: 50,
@@ -187,7 +197,7 @@ const AgriPredictorUI = () => {
               <Globe size={14} className="mr-1 text-green-200"/>
               <select 
                 value={lang} 
-                onChange={(e) => setLang(e.target.value)}
+                onChange={(e) => setLang(e.target.value as LangKey)}
                 className="bg-transparent text-xs font-bold text-white focus:outline-none cursor-pointer">
                 <option value="en" className="text-black">English</option>
                 <option value="hi" className="text-black">हिंदी (Hindi)</option>
@@ -218,20 +228,20 @@ const AgriPredictorUI = () => {
                   <div className="space-y-1">
                     <label className="text-xs text-slate-400 flex items-center gap-1"><Thermometer size={12}/> {t.temp}</label>
                     <input type="number" value={formData.temperature} 
-                      onChange={(e) => setFormData({...formData, temperature: e.target.value})}
+                      onChange={(e) => setFormData({...formData, temperature: Number(e.target.value)})}
                       className="w-full bg-white border border-slate-200 rounded-lg p-2 text-lg font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-green-500" />
                   </div>
                   <div className="space-y-1">
                     <label className="text-xs text-slate-400 flex items-center gap-1"><Wind size={12}/> {t.humid}</label>
                     <input type="number" value={formData.humidity} 
-                      onChange={(e) => setFormData({...formData, humidity: e.target.value})}
+                      onChange={(e) => setFormData({...formData, humidity: Number(e.target.value)})}
                       className="w-full bg-white border border-slate-200 rounded-lg p-2 text-lg font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-green-500" />
                   </div>
                 </div>
                 <div className="mt-4 space-y-1">
                   <label className="text-xs text-slate-400 flex items-center gap-1"><Droplets size={12}/> {t.moist}</label>
                   <input type="range" min="0" max="100" value={formData.moisture} 
-                    onChange={(e) => setFormData({...formData, moisture: e.target.value})}
+                    onChange={(e) => setFormData({...formData, moisture: Number(e.target.value)})}
                     className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-green-600" />
                   <div className="text-right text-xs font-bold text-green-600">{formData.moisture}%</div>
                 </div>
@@ -251,8 +261,9 @@ const AgriPredictorUI = () => {
                         {item.label[0]}
                       </div>
                       <input type="number" placeholder="0" 
-                        value={formData[item.key]}
-                        onChange={(e) => setFormData({...formData, [item.key]: e.target.value})}
+                        // FIX 2: Added 'as keyof typeof formData' so TS knows item.key is safe
+                        value={formData[item.key as keyof typeof formData]}
+                        onChange={(e) => setFormData({...formData, [item.key]: Number(e.target.value)})}
                         className="w-full text-center bg-white border border-slate-200 rounded-md py-1 text-sm font-semibold" />
                       <span className="text-[10px] text-slate-400 uppercase font-bold mt-1 block">{item.label}</span>
                     </div>
