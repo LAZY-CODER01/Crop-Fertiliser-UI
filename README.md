@@ -1,94 +1,166 @@
-🌱 AgriWise: Smart Crop & Fertilizer Recommendation System
-AgriWise is a machine learning-based web application that helps farmers optimize their yield. It analyzes soil and environmental conditions to recommend the most suitable crop and the specific fertilizer needed for that crop.
+🌱 AgriWise
+Smart Crop & Fertilizer Recommendation System
 
-The system uses a Two-Stage XGBoost Model:
+AgriWise is an AI-powered precision agriculture platform that helps farmers and agri-consultants make data-driven decisions to maximize crop yield and soil health.
+It analyzes soil nutrients and environmental conditions to recommend the most suitable crop and the exact fertilizer required, all in a single intelligent workflow.
 
-Stage 1: Predicts the best Crop based on Nitrogen (N), Phosphorous (P), Potassium (K), Temperature, Humidity, Moisture, and Soil Type.
+🚜 Problem Statement
 
-Stage 2: Predicts the required Fertilizer based on the soil nutrients and the predicted crop.
+Farmers often rely on intuition or generic guidelines for crop selection and fertilization, which can lead to:
 
-🚀 Features
-** Precision Agriculture:** Uses XGBoost (Extreme Gradient Boosting) for high-accuracy predictions.
+Poor yield
 
-Dual Recommendation: Provides both Crop and Fertilizer suggestions in a single flow.
+Soil degradation
 
-Multi-Language Support: Fully localized UI for English, Hindi, Marathi, Tamil, and Telugu.
+Overuse of fertilizers
 
-Interactive UI: Modern, responsive interface built with React & Tailwind CSS.
+Increased costs
 
-REST API: Fast and lightweight backend powered by Flask.
+AgriWise solves this by using machine learning models trained on real agricultural datasets to provide accurate, location-aware recommendations.
+
+🧠 Solution Overview
+
+AgriWise uses a Two-Stage XGBoost Machine Learning Pipeline:
+
+🔹 Stage 1 – Crop Recommendation
+
+Predicts the best crop based on:
+
+Nitrogen (N)
+
+Phosphorous (P)
+
+Potassium (K)
+
+Temperature
+
+Humidity
+
+Soil Moisture
+
+Soil Type
+
+🔹 Stage 2 – Fertilizer Recommendation
+
+Predicts the most suitable fertilizer using:
+
+Soil nutrients
+
+Soil type
+
+The predicted crop from Stage 1
+
+This staged approach improves accuracy and mirrors real-world agricultural decision-making.
+
+🚀 Key Features
+
+🌾 Precision Agriculture using XGBoost for high-accuracy predictions
+
+🔁 Dual Recommendation Flow (Crop + Fertilizer in one request)
+
+🌍 Multi-Language Support
+
+English
+
+Hindi
+
+Marathi
+
+Tamil
+
+Telugu
+
+🧑‍🌾 Farmer-Friendly UI with modern, responsive design
+
+⚡ Fast REST API powered by Flask
+
+📊 Confidence Scores & Alternatives for informed decision-making
 
 🛠️ Tech Stack
-Frontend: React.js, Tailwind CSS, Lucide Icons
+Frontend
 
-Backend: Python, Flask
+React.js
 
-Machine Learning: XGBoost, Scikit-Learn, Pandas, NumPy
+Tailwind CSS
 
-Model Serialization: Joblib
+Lucide Icons
+
+Backend
+
+Python
+
+Flask
+
+Flask-CORS
+
+Machine Learning
+
+XGBoost
+
+Scikit-Learn
+
+Pandas
+
+NumPy
+
+Model Persistence
+
+Joblib
 
 📂 Project Structure
-Bash
-
 AgriWise/
 ├── backend/
-│   ├── app.py                # The Flask API Server
-│   ├── train_model.py        # Script to train and save the model
-│   ├── agri_brain.joblib     # The trained "brain" (generated after training)
-│   ├── requirements.txt      # List of Python libraries
-│   └── data/                 # Folder containing CSV datasets
+│   ├── app.py                 # Flask REST API
+│   ├── train_model.py         # Model training pipeline
+│   ├── agri_brain.joblib      # Trained ML model (generated after training)
+│   ├── requirements.txt       # Python dependencies
+│   └── data/
 │       ├── train.csv
 │       └── Fertilizer Prediction.csv
 │
 └── frontend/
     ├── src/
     │   └── components/
-    │       └── AgriPredictorUI.js  # The Main React Component
+    │       └── AgriPredictorUI.js
     └── package.json
+
 ⚙️ Installation & Setup
-1. Backend Setup (The Brain)
-First, we need to train the model and start the API server.
-
-Bash
-
-# 1. Navigate to the backend folder
+1️⃣ Backend Setup (Model & API)
+# Navigate to backend
 cd backend
 
-# 2. Create a virtual environment (Optional but recommended)
+# Create virtual environment (recommended)
 python -m venv venv
-source venv/bin/activate  # On Windows use: venv\Scripts\activate
+source venv/bin/activate   # Windows: venv\Scripts\activate
 
-# 3. Install dependencies
+# Install dependencies
 pip install flask flask-cors pandas numpy scikit-learn xgboost joblib
 
-# 4. Train the Model (Run this ONCE to generate agri_brain.joblib)
+# Train the ML models (run once)
 python train_model.py
 
-# 5. Start the Server
+# Start the Flask server
 python app.py
-The API will start running at http://127.0.0.1:5000
 
-2. Frontend Setup (The Interface)
-Bash
 
-# 1. Navigate to the frontend folder
+Backend runs at:
+
+http://127.0.0.1:5000
+
+2️⃣ Frontend Setup (User Interface)
 cd frontend
 
-# 2. Install Node modules
 npm install
-
-# 3. Start the React App
 npm run dev
-The App will open at http://localhost:3000
+
+
+Frontend runs at:
+
+http://localhost:3000
 
 🔗 API Documentation
-Endpoint: POST /predict
-Sends soil data to the model and returns recommendations.
-
-Request Body (JSON):
-
-JSON
-
+POST /predict
+Request Body (JSON)
 {
   "temperature": 26,
   "humidity": 50,
@@ -98,10 +170,8 @@ JSON
   "phosphorous": 25,
   "soil_type": "Clayey"
 }
-Response (JSON):
 
-JSON
-
+Response (JSON)
 {
   "recommended_crop": "Rice",
   "recommended_fertilizer": "Urea",
@@ -110,20 +180,46 @@ JSON
     { "crop": "Coffee", "confidence": 3.1 }
   ]
 }
+
 📊 Datasets Used
-This project was trained on open-source agricultural datasets:
 
-Crop Recommendation Dataset: Kaggle Link
+🌾 Crop Recommendation Dataset – Kaggle
 
-Fertilizer Prediction Dataset: Kaggle Link
+🧪 Fertilizer Prediction Dataset – Kaggle
+
+(Used strictly for educational and research purposes.)
+
+🌟 Future Enhancements
+
+Satellite & weather API integration
+
+Region-specific soil calibration
+
+Mobile-first farmer app
+
+Market price prediction for crops
+
+Government scheme recommendations
 
 🤝 Contributing
-Fork the repository
 
-Create your feature branch (git checkout -b feature/AmazingFeature)
+Contributions are welcome!
 
-Commit your changes (git commit -m 'Add some AmazingFeature')
+# Fork the repo
+# Create a feature branch
+git checkout -b feature/YourFeature
 
-Push to the branch (git push origin feature/AmazingFeature)
+# Commit changes
+git commit -m "Add YourFeature"
 
-Open a Pull Request
+# Push to GitHub
+git push origin feature/YourFeature
+
+
+Then open a Pull Request 🚀
+
+👨‍💻 Author
+
+Avinash Maurya
+Software Engineering Student | ML & Full-Stack Developer
+Focused on building real-world, impact-driven systems
